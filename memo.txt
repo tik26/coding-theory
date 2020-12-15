@@ -1,0 +1,16 @@
+https://www.wdic.org/w/TECH/uint64_t
+
+#include<stdint.h>
+をしてuint_64tを使う？
+
+https://docs.microsoft.com/ja-jp/cpp/cpp/data-type-ranges?view=msvc-160
+
+https://yoshiiz.blog.fc2.com/blog-entry-199.html
+
+http://zakii.la.coocan.jp/signal/42_primitive_poly.htm
+
+https://oeis.org/A058943/b058943.txt
+
+https://www.partow.net/programming/polynomials/index.html
+
+http://www.rf-world.jp/bn/RFW30/samples/p062-063.pdf
