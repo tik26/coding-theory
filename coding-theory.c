@@ -9,14 +9,15 @@ int int_bits(unsigned int n);
 int bit_length(unsigned int n);
 unsigned countBits(unsigned int number);
 int logn(int base, double antilog);
+void polyExpress(unsigned int x);
 
 int main(void){
-    unsigned int irreducible[30000] = {0b10, 0b11};
+    unsigned int irreducible[100] = {0b10, 0b11};
     // ans = division(0b1001110, 0b1011);
     int index = 2;
     int j;
     unsigned int ans = 0;
-    for(unsigned int i=4; i < 100000; i++){
+    for(unsigned int i=4; i < 100; i++){
         j = 0;
         while(j<index){
             ans = division3(i, irreducible[j]);
@@ -47,7 +48,16 @@ int main(void){
     printf("\nindex: %u\n", index);
     // printf("%d\n", irreducible[0]);
     for(int k=0; k<index; k++){
-        printf("%d\n", irreducible[k]);
+        // printf("%d\n", irreducible[k]);
+        polyExpress(irreducible[k]);
+    }
+    
+    unsigned long long int Xn[100] = {};
+    unsigned long long int tmp;
+    for(int i=0; i<100; i++){
+        tmp = 1;
+        Xn[i] = (tmp << (i+1)) + 1;
+        printf("%u\n", Xn[i]);
     }
     
     
@@ -188,6 +198,19 @@ unsigned countBits(unsigned int number)
     //   return logn(2, number+1);
 }
 
-void polyExpress() {
-    
+void polyExpress(unsigned int x) {
+    for(int i=0; i<countBits(x); i++){
+        if(((x >> i) & 1) == 1){
+            printf("X^%d", i);
+            if(i != countBits(x)-1){
+                printf(" + ");
+            }
+        }
+        
+    }
+    printf("\n");
+}
+
+int isPrimPoly(unsigned int x, unsigned int divident) {
+    unsigned int bit_len = countBits(x);
 }
