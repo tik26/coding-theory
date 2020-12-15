@@ -11,12 +11,12 @@ unsigned countBits(unsigned int number);
 int logn(int base, double antilog);
 
 int main(void){
-    unsigned int irreducible[300000] = {0b10, 0b11};
+    unsigned int irreducible[30000] = {0b10, 0b11};
     // ans = division(0b1001110, 0b1011);
     int index = 2;
     int j;
     unsigned int ans = 0;
-    for(unsigned int i=4; i < 10000000; i++){
+    for(unsigned int i=4; i < 100000; i++){
         j = 0;
         while(j<index){
             ans = division3(i, irreducible[j]);
@@ -186,4 +186,8 @@ unsigned countBits(unsigned int number)
       // take only integer part 
       return (int)log2(number)+1;
     //   return logn(2, number+1);
+}
+
+void polyExpress() {
+    
 }
