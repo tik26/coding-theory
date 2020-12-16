@@ -94,37 +94,6 @@ unsigned int division(unsigned int dividend, unsigned int divisor){
     return remainder;
 }
 
-// unsigned int division2(unsigned int dividend, unsigned int divisor){
-//     unsigned int dividend_digit = countBits(dividend);
-//     unsigned int divisor_digit = countBits(divisor);
-//     // printf("dividend %d divisor %d\n", dividend_digit, divisor_digit);
-    
-//     unsigned int diff = dividend_digit - divisor_digit;
-//     unsigned int divident_shift = dividend >> diff;
-//     // printf("shift%u", divident_shift);
-//     unsigned int xor = divident_shift ^ divisor;
-//     unsigned int remainder = dividend;
-//     unsigned int quotient;
-
-//     for(int i=diff+1; i>0; i--) {
-//         xor = (remainder >> (i-1)) ^ divisor;
-//         remainder = (xor << 1) + ((dividend >> (i-2)) & 1);
-//         printf("%d\n", xor);
-//         printf("%d\n", remainder);
-        
-//         if(remainder >= divisor){
-//             xor = remainder ^ divisor;
-//             remainder = (xor << 1) + ((dividend >> (i-2)) & 1);
-//             printf("round%d remainder >= divisor\n", i);
-//         } else {
-//             remainder = (remainder << 1) + ((dividend >> (i-2)) & 1);
-//             printf("round%d\n", i);
-//         }
-//     }
-    
-
-//     return remainder;
-// }
 
 unsigned int division3(unsigned int dividend, unsigned int divisor){
     unsigned int dividend_digit = countBits(dividend);
