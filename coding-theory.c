@@ -8,6 +8,7 @@ unsigned int get_digit(unsigned int n);
 unsigned int countBits(unsigned int number);
 void polyExpress(unsigned long long int x);
 int isPrimPoly(unsigned long long int *dividend, unsigned long long int divisor);
+int isPrimPoly2(unsigned long long int irreducible);
 
 int main(void){
     unsigned long long int irreducible[8000] = {0b10, 0b11};
@@ -18,13 +19,13 @@ int main(void){
     unsigned long long int tmp;
 
     // for loop to create (X^n - 1) array
-    for(unsigned long long int i=0; i<100; i++){
-        tmp = 1;
-        Xn[i] = (tmp << (i+1)) + 1;
-        printf("%llu\n", Xn[i]);
-    }
+    // for(unsigned long long int i=0; i<50; i++){
+    //     tmp = 1;
+    //     Xn[i] = (tmp << (i+1)) + 1;
+    //     // printf("%llu\n", Xn[i]);
+    // }
 
-    for(unsigned int i=4; i < 520; i++){
+    for(unsigned int i=4; i < 150; i++){
         j = 0;
         while(j<index){
             // ans = division3(i, irreducible[j]);
@@ -46,7 +47,7 @@ int main(void){
     for(int k=0; k<index; k++){
         // printf("%d\n", irreducible[k]);
         polyExpress(irreducible[k]);
-        if(isPrimPoly(Xn, irreducible[k]) == 1){
+        if(isPrimPoly2(irreducible[k]) == 1){
             printf("^Primitive polynomial\n");
         }
 
@@ -181,4 +182,30 @@ int isPrimPoly(unsigned long long int *dividend, unsigned long long int divisor)
             
         }return 1;
     }
+}
+
+int isPrimPoly2(unsigned long long int irreducible){
+    unsigned int degree = countBits(irreducible) - 1;
+    unsigned int n = (unsigned int)pow(2.0, (double)degree) - 1;
+    unsigned int alpha[n];
+    for(int i=0; i<=degree; i++){
+        alpha[i] = (1 << i);
+    }
+    // printf("%u\n", alpha[degree]);
+    alpha[degree] = (irreducible ^ alpha[degree]);
+    // printf("%u\n", alpha[degree]);
+    for(int i=degree+1; i<n; i++){
+        alpha[i] = alpha[i-1] << 1;
+        // printf("%d\n", alpha[i]);
+        if((alpha[i]^irreducible) == 1){
+            return 0;
+            break;
+        }
+        if(countBits(alpha[i]) == (degree+1)){
+            alpha[i] = alpha[i] ^ ((1 << degree) + alpha[degree]);
+            // printf("CountBits: %d\n", alpha[i]);
+        }
+        
+    }
+    return 1;
 }
