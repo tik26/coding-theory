@@ -3,20 +3,27 @@
 #include <math.h>
 
 unsigned int division(unsigned int dividend, unsigned int divisor);
-unsigned int division3(unsigned int dividend, unsigned int divisor);
+unsigned int division3(unsigned long long int dividend, unsigned long long int divisor);
 unsigned int get_digit(unsigned int n);
-int int_bits(unsigned int n);
-int bit_length(unsigned int n);
 unsigned countBits(unsigned int number);
-int logn(int base, double antilog);
 void polyExpress(unsigned int x);
+int isPrimPoly(unsigned long long int *dividend, unsigned long long int divisor);
 
 int main(void){
-    unsigned int irreducible[100] = {0b10, 0b11};
-    // ans = division(0b1001110, 0b1011);
+    unsigned long long int irreducible[800000] = {0b10, 0b11};
     int index = 2;
     int j;
     unsigned int ans = 0;
+    unsigned long long int Xn[100] = {};
+    unsigned long long int tmp;
+
+    // for loop to create (X^n - 1) array
+    for(int i=0; i<62; i++){
+        tmp = 1;
+        Xn[i] = (tmp << (i+1)) + 1;
+        // printf("%lld\n", Xn[i]);
+    }
+
     for(unsigned int i=4; i < 100; i++){
         j = 0;
         while(j<index){
@@ -31,18 +38,7 @@ int main(void){
             index++;
             // printf("index %d", index);
         }
-        // for(int j=0; j<index; j++){
-        //     printf("i: %d, j: %d", i, j);
-        //     // if((division3(i, irreducible[j]) & 0) == 0){
-        //     //     printf("%d", i);
-        //     //     irreducible[index] = i;
-        //     //     // printf("%d", i);
-        //     //     index++;
-        //     // }
-        //     printf("Final ans: %d\n", division3(i, irreducible[j]));
-            
-        // }
-        // index = index2;
+        
         
     }
     printf("\nindex: %u\n", index);
@@ -50,16 +46,31 @@ int main(void){
     for(int k=0; k<index; k++){
         // printf("%d\n", irreducible[k]);
         polyExpress(irreducible[k]);
+        if(isPrimPoly(Xn, irreducible[k]) == 1){
+            printf("^Primitive polynomial\n");
+        }
+
+        // int degree = countBits(irreducible[k]) - 1;
+        // int n = (int)pow(2.0, (double)degree) - 1;
+        // if(division3(Xn[n-1], irreducible[k]) == 0){
+        //     printf("p(X) divides X^%d + 1\n", n);
+        //     for(int l=degree; l<n-1; l++){
+        //         printf("%d\n", l);
+        //         if(isPrimPoly(Xn[l-1], irreducible[k]) != 0) {
+        //             continue;
+        //         } else {
+        //             break;
+        //         }
+        //         printf("^ Prime Polynomial\n");
+
+        //     }
+        // }
+        
+
     }
     
-    unsigned long long int Xn[100] = {};
-    unsigned long long int tmp;
-    for(int i=0; i<100; i++){
-        tmp = 1;
-        Xn[i] = (tmp << (i+1)) + 1;
-        printf("%u\n", Xn[i]);
-    }
     
+    printf("\nindex: %u\n", index);
     
     return 0;
 }
@@ -95,16 +106,16 @@ unsigned int division(unsigned int dividend, unsigned int divisor){
 }
 
 
-unsigned int division3(unsigned int dividend, unsigned int divisor){
+unsigned int division3(unsigned long long int dividend, unsigned long long int divisor){
     unsigned int dividend_digit = countBits(dividend);
     unsigned int divisor_digit = countBits(divisor);
     // printf("dividend %d divisor %d\n", dividend_digit, divisor_digit);
     
     unsigned int diff = dividend_digit - divisor_digit;
     // printf("shift%u", divident_shift);
-    unsigned int xor = (dividend >> diff) ^ divisor;
-    unsigned int remainder = (xor << 1) + ((dividend >> (diff-1)) & 1);
-    unsigned int quotient = 1;
+    unsigned long long int xor = (dividend >> diff) ^ divisor;
+    unsigned long long int remainder = (xor << 1) + ((dividend >> (diff-1)) & 1);
+    unsigned long long int quotient = 1;
 
     for(int i=diff; i>0; i--) {
         // printf("%d\n", xor);
@@ -131,40 +142,12 @@ unsigned int get_digit(unsigned int n){
     return sprintf(s, "%u", n);
 }
 
-/*--- unsigned型のビット数を返却 ---*/
-int int_bits(unsigned int n)
-{
-    int count  = 0;
-    unsigned int x = ~n;
-
-    while (x) {
-        if (x & 1U) count++;
-        x >>= 1;
-    }
-    return count;
-}
-
-int bit_length(unsigned int n) {
-    int count = 0;
-    unsigned int check = ~0U;
-    while(check) {
-        if((n | check) != 0) count++;
-        n >>= 1;
-    }
-    return count;
-}
-
-int logn(int base, double antilog) {
-    return log(antilog) / log((double)base);
-}
-
 
 unsigned countBits(unsigned int number) 
 {       
       // log function in base 2  
       // take only integer part 
       return (int)log2(number)+1;
-    //   return logn(2, number+1);
 }
 
 void polyExpress(unsigned int x) {
@@ -180,6 +163,25 @@ void polyExpress(unsigned int x) {
     printf("\n");
 }
 
-int isPrimPoly(unsigned int x, unsigned int divident) {
-    unsigned int bit_len = countBits(x);
+int isPrimPoly(unsigned long long int *dividend, unsigned long long int divisor) {
+    int degree = countBits(divisor) - 1;
+    int n = (int)pow(2.0, (double)degree) - 1;
+    // printf("degree: %d, n: %d\n", degree, n);
+    // printf("%lld", dividend[n-]);
+    if(division3(dividend[n-1], divisor) != 0){
+        // printf("%lld %lld", dividend[n-1], divisor);
+        return 0;
+    } else {
+        for(int i=degree; i<n-1; i++){
+            // printf("%d\n", i);
+            if(division3(dividend[i], divisor) == 0){
+                return 0;
+                break;
+            }
+            
+        }return 1;
+    }
+    
+      
+    
 }
