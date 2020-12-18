@@ -3,14 +3,14 @@
 #include <math.h>
 
 unsigned int division(unsigned int dividend, unsigned int divisor);
-unsigned int division3(unsigned long long int dividend, unsigned long long int divisor);
+unsigned long long int division3(unsigned long long int dividend, unsigned long long int divisor);
 unsigned int get_digit(unsigned int n);
-unsigned countBits(unsigned int number);
-void polyExpress(unsigned int x);
+unsigned int countBits(unsigned int number);
+void polyExpress(unsigned long long int x);
 int isPrimPoly(unsigned long long int *dividend, unsigned long long int divisor);
 
 int main(void){
-    unsigned long long int irreducible[800000] = {0b10, 0b11};
+    unsigned long long int irreducible[8000] = {0b10, 0b11};
     int index = 2;
     int j;
     unsigned int ans = 0;
@@ -18,18 +18,18 @@ int main(void){
     unsigned long long int tmp;
 
     // for loop to create (X^n - 1) array
-    for(int i=0; i<62; i++){
+    for(unsigned long long int i=0; i<100; i++){
         tmp = 1;
         Xn[i] = (tmp << (i+1)) + 1;
-        // printf("%lld\n", Xn[i]);
+        printf("%llu\n", Xn[i]);
     }
 
-    for(unsigned int i=4; i < 100; i++){
+    for(unsigned int i=4; i < 520; i++){
         j = 0;
         while(j<index){
-            ans = division3(i, irreducible[j]);
+            // ans = division3(i, irreducible[j]);
             // printf("%d ", ans);
-            if(ans == 0) break;
+            if(division3(i, irreducible[j]) == 0) break;
             // printf("%d\n", j);
             j++;
         }
@@ -87,7 +87,7 @@ unsigned int division(unsigned int dividend, unsigned int divisor){
     unsigned int remainder = (xor << 1) + ((dividend >> (diff-1)) & 1);
     unsigned int quotient;
 
-    for(int i=diff; i>1; i--) {
+    for(unsigned int i=diff; i>1; i--) {
         printf("%d\n", xor);
         printf("%d\n", remainder);
         
@@ -106,7 +106,7 @@ unsigned int division(unsigned int dividend, unsigned int divisor){
 }
 
 
-unsigned int division3(unsigned long long int dividend, unsigned long long int divisor){
+unsigned long long int division3(unsigned long long int dividend, unsigned long long int divisor){
     unsigned int dividend_digit = countBits(dividend);
     unsigned int divisor_digit = countBits(divisor);
     // printf("dividend %d divisor %d\n", dividend_digit, divisor_digit);
@@ -117,7 +117,7 @@ unsigned int division3(unsigned long long int dividend, unsigned long long int d
     unsigned long long int remainder = (xor << 1) + ((dividend >> (diff-1)) & 1);
     unsigned long long int quotient = 1;
 
-    for(int i=diff; i>0; i--) {
+    for(unsigned int i=diff; i>0; i--) {
         // printf("%d\n", xor);
         // printf("%d\n", remainder);
         
@@ -143,15 +143,15 @@ unsigned int get_digit(unsigned int n){
 }
 
 
-unsigned countBits(unsigned int number) 
+unsigned int countBits(unsigned int number) 
 {       
       // log function in base 2  
       // take only integer part 
-      return (int)log2(number)+1;
+      return (unsigned int)log2(number)+1;
 }
 
-void polyExpress(unsigned int x) {
-    for(int i=0; i<countBits(x); i++){
+void polyExpress(unsigned long long int x) {
+    for(unsigned int i=0; i<countBits(x); i++){
         if(((x >> i) & 1) == 1){
             printf("X^%d", i);
             if(i != countBits(x)-1){
@@ -164,15 +164,15 @@ void polyExpress(unsigned int x) {
 }
 
 int isPrimPoly(unsigned long long int *dividend, unsigned long long int divisor) {
-    int degree = countBits(divisor) - 1;
-    int n = (int)pow(2.0, (double)degree) - 1;
+    unsigned int degree = countBits(divisor) - 1;
+    unsigned int n = (unsigned int)pow(2.0, (double)degree) - 1;
     // printf("degree: %d, n: %d\n", degree, n);
     // printf("%lld", dividend[n-]);
     if(division3(dividend[n-1], divisor) != 0){
         // printf("%lld %lld", dividend[n-1], divisor);
         return 0;
     } else {
-        for(int i=degree; i<n-1; i++){
+        for(unsigned int i=degree; i<n-1; i++){
             // printf("%d\n", i);
             if(division3(dividend[i], divisor) == 0){
                 return 0;
@@ -181,7 +181,4 @@ int isPrimPoly(unsigned long long int *dividend, unsigned long long int divisor)
             
         }return 1;
     }
-    
-      
-    
 }
