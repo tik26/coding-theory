@@ -1,18 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
-unsigned long long int division(unsigned long long int dividend, unsigned long long int divisor);
+unsigned int division(unsigned int dividend, unsigned int divisor);
 unsigned int countBits(unsigned int number);
-void polyExpress(unsigned long long int x);
-int isPrimPoly(unsigned long long int irreducible);
+void polyExpress(unsigned int x);
+int isPrimPoly(unsigned int irreducible);
+
+FILE *output;
+
 
 int main(void){
-    unsigned long long int irreducible[500000] = {0b10, 0b11};
-    unsigned long long int j, index = 2;
-    unsigned long long int tmp;
+    unsigned int irreducible[220000] = {0b10, 0b11};
+    unsigned int j, index = 2;
+    unsigned int tmp;
 
-    for(unsigned long long int i=4; i < 100; i++){
+    for(unsigned int i=4; i < 2097152; i++){
         j = 0;
         while(j<index){
             if(division(i, irreducible[j]) == 0) break;
@@ -23,27 +27,31 @@ int main(void){
             index++;
         }        
     }
-
+    
     // printf("\nindex: %u\n", index);
-    for(unsigned long long int k=0; k<index; k++){
+    for(unsigned int k=0; k<index; k++){
         polyExpress(irreducible[k]);
+        output = fopen("ans.txt", "a");
         if(isPrimPoly(irreducible[k]) == 1){
             printf("  Primitive polynomial");
+            fprintf(output, "  Primitive polynomial");
         }
         printf("\n");
+        fprintf(output, "\n");
+        fclose(output);
     }
     return 0;
 }
 
-unsigned long long int division(unsigned long long int dividend, unsigned long long int divisor){
+unsigned int division(unsigned int dividend, unsigned int divisor){
     unsigned int dividend_digit = countBits(dividend);
     unsigned int divisor_digit = countBits(divisor);    
     
     unsigned int diff = dividend_digit - divisor_digit;
     
-    unsigned long long int xor = (dividend >> diff) ^ divisor;
-    unsigned long long int remainder = (xor << 1) + ((dividend >> (diff-1)) & 1);
-    unsigned long long int quotient = 1;
+    unsigned int xor = (dividend >> diff) ^ divisor;
+    unsigned int remainder = (xor << 1) + ((dividend >> (diff-1)) & 1);
+    unsigned int quotient = 1;
 
     for(unsigned int i=diff; i>0; i--) {        
         if(countBits(remainder) == divisor_digit){
@@ -67,15 +75,27 @@ unsigned int countBits(unsigned int number)
       return (unsigned int)log2(number)+1;
 }
 
-void polyExpress(unsigned long long int x) {
+void polyExpress(unsigned int x) {
+    // char ans[100] = "";
+    // char tmp[100];
+    output = fopen("ans.txt", "a");
     for(unsigned int i=0; i<countBits(x); i++){
+        char ans[100] = "";
+        char tmp[100];
         if(((x >> i) & 1) == 1){
             printf("X^%d", i);
+            sprintf(tmp, "X^%d", i);
+            strcat(ans, tmp);
             if(i != countBits(x)-1){
                 printf(" + ");
+                strcat(ans, " + ");
             }
+            fprintf(output, ans);
         }
+        // strcat
+        
     }
+    fclose(output);
     // if(isPrimPoly(x) == 1){
     //     FILE *output;
     //     output = fopen("result.txt", "a");
@@ -84,10 +104,10 @@ void polyExpress(unsigned long long int x) {
     // printf("\n");
 }
 
-int isPrimPoly(unsigned long long int irreducible){
+int isPrimPoly(unsigned int irreducible){
     unsigned int degree = countBits(irreducible) - 1;
     unsigned int n = (unsigned int)pow(2.0, (double)degree) - 1;
-    unsigned long long int alpha[n];
+    unsigned int alpha[n];
     for(int i=0; i<=degree; i++){
         alpha[i] = (1 << i);
     }
