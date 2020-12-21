@@ -96,12 +96,6 @@ void polyExpress(unsigned int x) {
         
     }
     fclose(output);
-    // if(isPrimPoly(x) == 1){
-    //     FILE *output;
-    //     output = fopen("result.txt", "a");
-    //     fprintf(output, )
-    // }
-    // printf("\n");
 }
 
 int isPrimPoly(unsigned int irreducible){
